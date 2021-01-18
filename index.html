@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- webGL用indexテンプレート　-->
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Chord Creator</title>
+    <meta name="keywords" content="ギター, ギターコード, コード, 音楽">
+    <meta name="theme-color" content="#373C4D">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@kitsunegadget">
+    <meta name="twitter:creator" content="@yuy_az_">
+    <meta property="og:url" content="https://kitsunegadget.github.io/">
+    <meta property="og:title" content="Guitar Chord Creator">
+    <meta property="og:description" content="Find & Create your guitar chord.">
+    <meta property="og:image" content="https://kitsunegadget.github.io/guitar-chord-creator/card.png"
+</head>
+<body style="display: flex; justify-content: center; background: #e6e6e6;">
+    <div style="max-width: 1280px;">
+        <h2 style="text-align: left;" draggable="true">Guitar Chord Creator</h2>
+        <canvas 
+            id="unity-canvas" 
+            style="
+                width: 98vw; 
+                height: calc(98vw * 9/16); 
+                max-width: 1280px;
+                max-height: 720px;
+                background: #373C4D"
+        ></canvas>
+    </div>
+    <script src="Build/35068116dca29323421b7897ba08b599.js"></script>
+    <script>
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        dataUrl: "Build/e50b98466924ddad9040561fa27690b6.data.unityweb",
+        frameworkUrl: "Build/d272203ddbfa59904dc51a620b5ac67d.js.unityweb",
+        codeUrl: "Build/a4abe24f0e8b78199f2cf49527acc53c.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Kitsune Gadget",
+        productName: "Guitar Chord Creater",
+        productVersion: "1.0",
+      });
+    </script>
+  </body>
+</html>
