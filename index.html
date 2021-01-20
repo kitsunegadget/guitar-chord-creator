@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<!-- webGL用indexテンプレート　-->
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guitar Chord Creator</title>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Guitar Chord Creater</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
     <meta name="keywords" content="ギター, ギターコード, コード, 音楽">
     <meta name="theme-color" content="#373C4D">
     <meta name="twitter:card" content="summary">
@@ -15,32 +16,78 @@
     <meta property="og:description" content="Find & Create your guitar chord.">
     <meta property="og:image" content="https://kitsunegadget.github.io/guitar-chord-creator/card.png">
     <link rel="manifest" href="./manifest.json">
-</head>
-<body style="display: flex; justify-content: center; background: #e6e6e6;">
-    <div style="max-width: 1280px;">
-        <h2 style="text-align: left;" draggable="true">Guitar Chord Creator</h2>
-        <canvas 
-            id="unity-canvas" 
-            style="
-                width: 90vw; 
-                height: calc(90vw * 9/16); 
-                max-width: 1280px;
-                max-height: 720px;
-                background: #373C4D;
-                border: groove 1px #eee;"
-        ></canvas>
+  </head>
+  <body style="display: flex; justify-content: center; background: #e6e6e6;">
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas"></canvas>
+      <div id="unity-loading-bar">
+        <!-- <div id="unity-logo"></div> -->
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-mobile-warning">
+        WebGL builds are not supported on mobile devices.
+      </div>
+      <div id="unity-footer">
+        <!-- <div id="unity-webgl-logo"></div> -->
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">Guitar Chord Creater</div>
+      </div>
     </div>
-    <script src="Build/35068116dca29323421b7897ba08b599.js"></script>
     <script>
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/6623519af6e8ce98824c6005b1d5c4f8.data.unityweb",
-        frameworkUrl: "Build/9260da9d5bb88b4fd95c9c34cca6f3bd.js.unityweb",
-        codeUrl: "Build/53cc2e792a023c08412193e11f87dd32.wasm.unityweb",
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/35068116dca29323421b7897ba08b599.js";
+      var config = {
+        dataUrl: buildUrl + "/d24239d6d32938ee47762dd786c1fd05.data.unityweb",
+        frameworkUrl: buildUrl + "/9260da9d5bb88b4fd95c9c34cca6f3bd.js.unityweb",
+        codeUrl: buildUrl + "/53cc2e792a023c08412193e11f87dd32.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Kitsune Gadget",
         productName: "Guitar Chord Creater",
         productVersion: "1.0",
-      });
+      };
+
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var mobileWarning = document.querySelector("#unity-mobile-warning");
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // container.className = "unity-mobile";
+        config.devicePixelRatio = 1;
+        mobileWarning.style.display = "block";
+        setTimeout(() => {
+          mobileWarning.style.display = "none";
+        }, 5000);
+      } else {
+        // canvas.style.width = "960px";
+        // canvas.style.height = "540px";
+      }
+      canvas.style.width = "90vw";
+      canvas.style.height = "90vw * 9/16";
+      canvas.style.maxWidth = "1280px";
+      // canvas.style.border = "groove 1px #eee";
+
+      loadingBar.style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          fullscreenButton.onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
     </script>
   </body>
 </html>
